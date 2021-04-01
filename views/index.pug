@@ -1,0 +1,48 @@
+extends layout 
+
+block content
+  h1.text-warning.text-center.my-5 Zyrass Node Todo
+  form(action="/ajouter", method="post")
+    .row.my-5
+      .col-md-11
+        input.form-control(
+          type='text' 
+          placeholder='Ajouter une nouvelle tâche ici' 
+          name="title"
+        )
+      .col-md-1
+        button.btn.btn-primary.btn-block(type='submit', title="Ajouter une nouvelle tâche en cliquant ici")
+          i.fas.fa-plus
+
+  .row
+    .col-md-12.bg-white
+      h3.text-dark.text-uppercase.d-flex.justify-content-between.align-center.p-4.mt-3.bg-warning Liste des tâches
+        span.badge.badge-secondary= counterAll
+      
+      if todos.length > 0
+
+        table.table.table-striped.table-dark.table-bordered.table-hover.table-sm
+          caption Le tableau correspond à ma liste de tâche à faire.
+          thead
+            tr.text-uppercase.text-center
+              th(scope='col') ID
+              th(scope='col') Dénomination
+              th(scope='col') Action
+          tbody
+
+            each todo in todos
+              tr
+                td.text-center= todo._id
+                td.text-center.bg-primary.text-white= todo.title
+                td.d-flex.justify-content-around 
+
+                  form(action=`/update/${todo.id}?_method=PUT`, method="post")
+                    button.btn.btn-sm.btn-info
+                      i.fas.fa-edit
+                  
+                  form(action=`/supprimer/${todo.id}?_method=DELETE`,  method="post")
+                    button.btn.btn-sm.btn-danger(type="submit")
+                      i.fas.fa-trash
+
+      else 
+        .alert.alert-info Aucune, tâche actuellement en cours...
